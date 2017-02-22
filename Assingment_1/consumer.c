@@ -51,16 +51,12 @@ int main()
 
     //shared memory descriptor
     int shm_fd;
-
     //open shared memory object
     shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
-
     //configures the size of the shared memory object
     ftruncate(shm_fd, SHM_SIZE);
-
     //memory map the shared memory object 
     gShmPtr = mmap(0, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-
 
     // Write code here to read the four integers from the header of the shared memory block 
     // These are: bufSize, itemCnt, in, out
