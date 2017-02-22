@@ -49,28 +49,25 @@ int main(int argc, char* argv[])
     pid_t pid;
     int bufSize; // Bounded buffer size
     int itemCnt; // Number of items to be produced
-    int randSeed; // Seed for the random number generator 
-
+    int randSeed; // Seed for the random number generator
+	
     if(argc != 4){
         printf("Invalid number of command-line arguments\n");
         exit(1);
     }
-
     bufSize = atoi(argv[1]); 
     if(bufSize > 2000) { //bufSize cannot exceed 2000
         printf("Buffer size cannot exceed 2000\n");
         exit(1);
     }
-
+	
     itemCnt = atoi(argv[2]);
     randSeed = atoi(argv[3]);
-
     // Function that creates a shared memory segment and initializes its header
     InitShm(bufSize, itemCnt);        
 
     /* fork a child process */ 
     pid = fork();
-
     if (pid < 0) { /* error occurred */
         fprintf(stderr, "Fork Failed\n");
         exit(1);
@@ -82,10 +79,8 @@ int main(int argc, char* argv[])
     else { /* parent process */
         /* parent will wait for the child to complete */
         printf("Starting Producer\n");
-        
         // The function that actually implements the production
-        Producer(bufSize, itemCnt, randSeed);
-        
+        Producer(bufSize, itemCnt, randSeed); 
         printf("Producer done and waiting for consumer\n");
         wait(NULL);     
         printf("Consumer Completed\n");
@@ -100,19 +95,13 @@ void InitShm(int bufSize, int itemCnt)
     int in = 0;
     int out = 0;
     const char *name = "OS_HW1_AndrewPeklar"; // Name of shared memory object to be passed to shm_open
-
     int shm_fd;
-
-
     //creates the shared memory object
     shm_fd = shm_open(name, O_CREAT | O_RDWR, 0666);
-
     // configure the size of the shared memory object 
     ftruncate(shm_fd , SHM_SIZE);
-
     // memory map the shared memory object 
     gShmPtr = mmap(0, SHM_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, shm_fd, 0);
-    
     // Write code here to set the values of the four integers in the header
     SetBufSize(bufSize);
     SetItemCnt(itemCnt);
@@ -124,9 +113,7 @@ void Producer(int bufSize, int itemCnt, int randSeed)
 {
     int in = 0;		//first fill
     int out = 0;	//first full
-
-    int i;
-    int val;
+    int i, val;
 	
     //seed value used by GetRand()
     srand(randSeed);
@@ -135,11 +122,11 @@ void Producer(int bufSize, int itemCnt, int randSeed)
     //out = in + 1; while loop is the "wait"
     //write and overwrite with random value a{0...1000}
     for(i=0; i < itemCnt; i++) {
-		in  = GetIn(); 
+	in  = GetIn(); 
         while(((in + 1) % GetBufSize()) == GetOut()); 
         WriteAtBufIndex(in, GetRand(0, 1000));
         val = ReadAtBufIndex(in); 
-		//i+1 for item count starting at 1; index vals start at 0
+	//i+1 for item count starting at 1; index vals start at 0
         printf("Producing Item %4d with value %3d at Index %d\n", i+1, val, in);
         SetIn((in + 1) % bufSize);
     }      
@@ -222,7 +209,6 @@ void WriteAtBufIndex(int indx, int val)
 int ReadAtBufIndex(int indx)
 {
         int val;
-
         // Skip the four-integer header and go to the given index
         void* ptr = gShmPtr + 4*sizeof(int) + indx*sizeof(int);
         memcpy(&val, ptr, sizeof(int));
