@@ -1,0 +1,46 @@
+FIFO
+Page 4 loaded in Frame 0
+Page 3 loaded in Frame 1
+Page 4 already in Frame 0
+Page 6 loaded in Frame 2
+Page 1 loaded in Frame 3
+Page 6 already in Frame 2
+Page 4 already in Frame 0
+Page 5 loaded in Frame 4
+Page 2 loaded in Frame 5
+Page 4 already in Frame 0
+Page 6 already in Frame 2
+Page 1 already in Frame 3
+Number of page faults: 6
+
+
+Optimal
+Page 4 loaded in Frame 0
+Page 3 loaded in Frame 1
+Page 4 already in Frame 0
+Page 6 loaded in Frame 2
+Page 1 loaded in Frame 3
+Page 6 already in Frame 2
+Page 4 already in Frame 0
+Page 5 loaded in Frame 4
+Page 2 loaded in Frame 5
+Page 4 already in Frame 0
+Page 6 already in Frame 2
+Page 1 already in Frame 3
+Number of page faults: 6
+
+
+LRU
+Page 4 loaded in Frame 0
+Page 3 loaded in Frame 1
+Page 4 already in Frame 0
+Page 6 loaded in Frame 2
+Page 1 loaded in Frame 3
+Page 6 already in Frame 2
+Page 4 already in Frame 0
+Page 5 loaded in Frame 4
+Page 2 loaded in Frame 5
+Page 4 already in Frame 0
+Page 6 already in Frame 2
+Page 1 already in Frame 3
+Number of page faults: 6
